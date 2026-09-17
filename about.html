@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About | Zitao Li</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f4f2ed;
+      color: #253c35;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    a:focus-visible { outline: 2px solid currentColor; outline-offset: 6px; }
+    .navigation {
+      padding: 24px clamp(24px, 6vw, 96px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 1px solid #d6dcd5;
+    }
+    .signature {
+      font-family: "Snell Roundhand", "Brush Script MT", "Apple Chancery", cursive;
+      font-size: 34px;
+      text-decoration: none;
+    }
+    .back-link { font-size: 13px; text-underline-offset: 5px; }
+    main {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: clamp(36px, 6vw, 80px) clamp(24px, 6vw, 80px);
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+      align-items: start;
+      gap: clamp(32px, 6vw, 80px);
+    }
+    .profile { position: sticky; top: 32px; }
+    figure { margin: 0; }
+    .scene {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 160px 160px 4px 4px;
+    }
+    figcaption { margin-top: 16px; font-size: 12px; color: #58675e; }
+    .eyebrow { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; }
+    h1 {
+      font-family: "Bodoni 72", "Bodoni MT", Didot, serif;
+      font-size: clamp(44px, 5vw, 68px);
+      font-weight: 400;
+      line-height: 1.1;
+      margin: 16px 0 20px;
+    }
+    .degree {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 19px;
+      line-height: 1.6;
+      color: #58675e;
+      margin: 0 0 32px;
+    }
+    section { border-top: 1px solid #d6dcd5; padding: 24px 0; }
+    h2 { font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; margin: 0 0 24px; }
+    section p { font-size: 15px; line-height: 1.9; color: #58675e; margin: 0; }
+    .intro { font-size: 16px; line-height: 1.9; color: #58675e; margin: 0 0 32px; }
+    .contact { margin-top: 24px; font-size: 14px; line-height: 1.8; }
+    .contact p { margin: 0 0 6px; }
+    .contact a { text-underline-offset: 5px; overflow-wrap: anywhere; }
+    .entry + .entry { margin-top: 30px; }
+    h3 { font-size: 18px; line-height: 1.5; font-weight: 500; margin: 0 0 6px; }
+    section .meta { font-size: 13px; line-height: 1.7; margin-bottom: 10px; }
+    section .role { color: #253c35; margin-bottom: 8px; }
+    ul { padding-left: 20px; margin: 12px 0 0; }
+    li { font-size: 15px; line-height: 1.8; color: #58675e; padding-left: 3px; margin-bottom: 8px; }
+    dl { margin: 0; }
+    .skill { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 16px; margin: 0 0 14px; font-size: 14px; line-height: 1.8; }
+    dt { font-weight: 500; }
+    dd { margin: 0; color: #58675e; }
+    footer {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 clamp(24px, 6vw, 80px) 28px;
+      font-size: 12px;
+      color: #58675e;
+    }
+
+    /* Random hobby reveal */
+    .hobby-random {
+      width: min(100%, 560px);
+      margin: 8px auto 0;
+    }
+
+    .hobby-stage {
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      border: 1px solid #d6dcd5;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(37, 60, 53, 0.08), transparent 34%),
+        linear-gradient(135deg, rgba(255,255,255,0.45), rgba(37,60,53,0.04));
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .hobby-stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(16, 27, 23, 0.52), transparent 46%);
+      opacity: 0;
+      transition: opacity 0.45s ease;
+      z-index: 2;
+    }
+
+    .hobby-stage.has-result::after {
+      opacity: 1;
+    }
+
+    .hobby-placeholder {
+      max-width: 360px;
+      padding: 28px;
+      text-align: center;
+      color: #58675e;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .hobby-placeholder .shuffle-mark {
+      display: block;
+      margin-bottom: 12px;
+      font-family: "Bodoni 72", "Bodoni MT", Didot, serif;
+      font-size: clamp(48px, 6vw, 76px);
+      line-height: 1;
+      color: #253c35;
+    }
+
+    .hobby-placeholder p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.7;
+      color: #58675e;
+    }
+
+    .hobby-stage.has-result .hobby-placeholder {
+      opacity: 0;
+      transform: scale(0.98);
+      pointer-events: none;
+    }
+
+    .hobby-result-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.035);
+      transition: opacity 0.5s ease, transform 0.8s cubic-bezier(.2,.75,.25,1);
+      z-index: 1;
+    }
+
+    .hobby-stage.has-result .hobby-result-image {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .hobby-result-copy {
+      position: absolute;
+      left: clamp(18px, 4vw, 34px);
+      right: clamp(18px, 4vw, 34px);
+      bottom: clamp(18px, 4vw, 30px);
+      z-index: 3;
+      color: white;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.4s ease 0.12s, transform 0.4s ease 0.12s;
+    }
+
+    .hobby-stage.has-result .hobby-result-copy {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hobby-kicker {
+      margin: 0 0 6px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.74);
+    }
+
+    #hobbyName {
+      margin: 0;
+      font-family: "Bodoni 72", "Bodoni MT", Didot, serif;
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 400;
+      line-height: 1.05;
+      color: white;
+    }
+
+    .hobby-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: 16px;
+      width: 100%;
+    }
+
+    .hobby-controls p {
+      margin: 0;
+      max-width: 430px;
+      font-size: 13px;
+      line-height: 1.7;
+      color: #58675e;
+    }
+
+    .shuffle-button {
+      flex: 0 0 auto;
+      appearance: none;
+      border: 1px solid #253c35;
+      border-radius: 999px;
+      background: #253c35;
+      color: #f4f2ed;
+      padding: 11px 18px;
+      min-height: 44px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .shuffle-button:hover {
+      transform: translateY(-1px);
+      background: #314b42;
+    }
+
+    .shuffle-button:active {
+      transform: translateY(0);
+    }
+
+    .shuffle-button:focus-visible {
+      outline: 2px solid #253c35;
+      outline-offset: 4px;
+    }
+
+    .date-line {
+      display: block;
+      margin-top: 6px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hobby-result-image,
+      .hobby-result-copy,
+      .hobby-placeholder,
+      .shuffle-button,
+      .hobby-stage::after {
+        transition: none;
+      }
+    }
+
+    @media (max-width: 700px) {
+      main { grid-template-columns: 1fr; }
+      .profile { position: static; }
+      .scene { aspect-ratio: 4 / 3; border-radius: 100px 100px 4px 4px; }
+      .signature { font-size: 30px; }
+      .hobby-random { width: min(100%, 460px); }
+      .hobby-controls {
+        align-items: stretch;
+        flex-direction: column;
+      }
+      .shuffle-button { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navigation">
+    <a class="signature" href="index.html">Zitao Li</a>
+    <a class="back-link" href="index.html">← Back to home</a>
+  </nav>
+
+  <main>
+    <aside class="profile">
+      <figure>
+        <img class="scene" src="images/ZitaoLi.PNG" alt="Portrait of Zitao Li" width="900" height="1200">
+      </figure>
+      <div class="contact">
+        <p>Los Angeles, CA</p>
+        <a href="mailto:zitaoli@usc.edu">zitaoli@usc.edu</a>
+      </div>
+    </aside>
+
+    <div>
+      <p class="eyebrow">About me</p>
+      <h1>Hello, I'm Zitao.</h1>
+      <p class="degree">Master of Science, Geographic Information Science and Technology</p>
+      <p class="intro">I'm a graduate student in Geographic Information Science and Technology at the University of Southern California, pursuing the Spatial Data Computing Track. I hold a bachelor's degree in Plant Science. My experience includes GIS analysis, GNSS and drone field data collection, and a course project in machine learning.</p>
+
+      <section>
+        <h2>Experience</h2>
+        <article class="entry">
+          <h3>University of Southern California</h3>
+          <p class="meta">Los Angeles, CA · January 2026–Present</p>
+          <p class="role">Graduate Student — GIST Program</p>
+          <ul>
+            <li>Completed coursework and projects focused on spatial data analysis and environmental applications.</li>
+            <li>Developed GIS workflows in ArcGIS Pro to analyze spatial patterns and environmental risk factors.</li>
+            <li>Processed raster and vector datasets using QGIS for spatial modeling and visualization.</li>
+            <li>Applied metadata standards to ensure data accuracy and consistency in geospatial analysis.</li>
+          </ul>
+        </article>
+        <article class="entry">
+          <h3>Carnegie Mellon University (Course Project)</h3>
+          <p class="meta">Pittsburgh, PA · Summer 2024</p>
+          <p class="role">Research Team Member — Machine Learning and Data Analysis</p>
+          <ul>
+            <li>Conducted research on coreset selection algorithms for fine-grained classification tasks.</li>
+            <li>Applied the SimCore algorithm to optimize training dataset selection and reduce data imbalance.</li>
+            <li>Designed and executed experiments to evaluate classification performance improvements.</li>
+            <li>Collaborated with team members to curate datasets and produce a conference-style research report.</li>
+          </ul>
+        </article>
+      </section>
+      <section>
+        <h2>Projects</h2>
+        <article class="entry">
+          <h3>Catalina Island Erosion Risk Assessment</h3>
+          <p class="meta">Catalina Field Excursion · Los Angeles, CA · Spring 2026</p>
+          <ul>
+            <li>Analyzed erosion risks along roads near USC Wrigley Marine Science Center using GIS and drone data.</li>
+            <li>Collected GNSS field data and multispectral drone imagery for 4 high-risk areas.</li>
+            <li>Generated slope, NDVI, and flow accumulation rasters using ArcGIS Pro.</li>
+            <li>Built a weighted overlay model (ERAI) to rank erosion risk levels.</li>
+            <li>Identified alternative routes and proposed mitigation strategies for high-risk zones.</li>
+          </ul>
+        </article>
+      </section>
+      <section>
+        <h2>Skills &amp; qualifications</h2>
+        <dl>
+          <div class="skill"><dt>Applications</dt><dd>ArcGIS Pro, QGIS, Drone2Map</dd></div>
+          <div class="skill"><dt>Hardware</dt><dd>UAV (Drone), GNSS Devices</dd></div>
+          <div class="skill"><dt>License</dt><dd>CAAC Civil UAS Pilot Certificate (VLOS)</dd></div>
+          <div class="skill"><dt>Programming</dt><dd>Python (Basic)</dd></div>
+          <div class="skill"><dt>Languages</dt><dd>Mandarin Chinese (Native), English (Proficient)</dd></div>
+        </dl>
+      </section>
+            <section>
+        <h2>Hobbies</h2>
+
+        <div class="hobby-random">
+          <div class="hobby-stage" id="hobbyStage">
+            <div class="hobby-placeholder" id="hobbyPlaceholder">
+              <span class="shuffle-mark">?</span>
+              <p>One click. One random side of me.</p>
+            </div>
+
+            <img
+              class="hobby-result-image"
+              id="hobbyImage"
+              src=""
+              alt=""
+              aria-hidden="true">
+
+            <div class="hobby-result-copy" aria-live="polite">
+              <p class="hobby-kicker">Random hobby</p>
+              <h3 id="hobbyName"></h3>
+            </div>
+          </div>
+
+          <div class="hobby-controls">
+            <p id="hobbyMessage">The photo stays hidden until you shuffle.</p>
+            <button class="shuffle-button" id="hobbyButton" type="button">
+              Shuffle a hobby
+            </button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    Zitao Li · Personal website
+    <span class="date-line" id="dateOutput"></span>
+  </footer>
+
+  <!-- Day.js: lightweight JavaScript date library -->
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+
+  <script>
+    const hobbies = [
+      {
+        name: "Snowboarding",
+        image: "images/IMG_5186.JPG",
+        alt: "Zitao snowboarding"
+      },
+      {
+        name: "Basketball",
+        image: "images/IMG_8430.JPG",
+        alt: "Zitao playing basketball"
+      }
+    ];
+
+    const hobbyStage = document.getElementById("hobbyStage");
+    const hobbyButton = document.getElementById("hobbyButton");
+    const hobbyImage = document.getElementById("hobbyImage");
+    const hobbyName = document.getElementById("hobbyName");
+    const hobbyMessage = document.getElementById("hobbyMessage");
+    const dateOutput = document.getElementById("dateOutput");
+
+    let previousIndex = -1;
+
+    // Picks a random hobby. When more than one option exists,
+    // it avoids showing the same hobby twice in a row.
+    function getRandomHobbyIndex() {
+      if (hobbies.length <= 1) return 0;
+
+      let nextIndex;
+      do {
+        nextIndex = Math.floor(Math.random() * hobbies.length);
+      } while (nextIndex === previousIndex);
+
+      return nextIndex;
+    }
+
+    // Reveals the selected hobby photo and updates the visible text.
+    function showRandomHobby() {
+      const nextIndex = getRandomHobbyIndex();
+      const hobby = hobbies[nextIndex];
+      previousIndex = nextIndex;
+
+      // Remove the reveal state first so repeated clicks animate cleanly.
+      hobbyStage.classList.remove("has-result");
+
+      window.setTimeout(() => {
+        hobbyImage.src = hobby.image;
+        hobbyImage.alt = hobby.alt;
+        hobbyImage.removeAttribute("aria-hidden");
+        hobbyName.textContent = hobby.name;
+        hobbyMessage.textContent = `You got: ${hobby.name}. Shuffle again for another one.`;
+
+        // Wait for the selected image before revealing it.
+        if (hobbyImage.complete) {
+          hobbyStage.classList.add("has-result");
+        } else {
+          hobbyImage.onload = () => hobbyStage.classList.add("has-result");
+        }
+      }, 160);
+    }
+
+    hobbyButton.addEventListener("click", showRandomHobby);
+
+    // Day.js formats the current date for the footer.
+    if (typeof dayjs !== "undefined") {
+      dateOutput.textContent = `Viewed on ${dayjs().format("MMMM D, YYYY")}`;
+    } else {
+      dateOutput.textContent = "Date unavailable";
+    }
+  </script>
+</body>
+</html>
